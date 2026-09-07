@@ -3,10 +3,7 @@ import {
     PermissionFlagsBits,
 } from 'discord.js';
 
-import {
-    getGuildConfig,
-    updateGuildConfig,
-} from '../../services/config/guildConfig.js';
+import { updateGuildConfig } from '../../services/config/guildConfig.js';
 
 export default {
     data: new SlashCommandBuilder()
@@ -15,24 +12,20 @@ export default {
         .addStringOption(option =>
             option
                 .setName('prefix')
-                .setDescription('The new prefix')
+                .setDescription('New prefix, for example ? or $')
                 .setRequired(true)
-                .setMaxLength(5),
+                .setMaxLength(5)
         )
-        .setDefaultMemberPermissions(
-            PermissionFlagsBits.Administrator,
-        ),
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
     category: 'core',
 
     async execute(interaction, config, client) {
-        const newPrefix = interaction.options
-            .getString('prefix')
-            .trim();
+        const prefix = interaction.options.getString('prefix')?.trim();
 
-        if (!newPrefix) {
+        if (!prefix) {
             return interaction.reply({
-                content: '❌ Prefix cannot be empty.',
+                content: '❌ You must provide a prefix.',
                 ephemeral: true,
             });
         }
@@ -40,34 +33,32 @@ export default {
         await updateGuildConfig(
             client,
             interaction.guildId,
-            { prefix: newPrefix },
+            { prefix }
         );
 
         await interaction.reply({
-            content: `✅ Server prefix changed to \`${newPrefix}\``,
+            content: `✅ Prefix changed to \`${prefix}\``,
             ephemeral: true,
         });
     },
 
     async prefixExecute(interaction, guildConfig, client) {
-        const newPrefix = interaction.options
-            .getString('prefix')
-            .trim();
+        const prefix = interaction.options.getString('prefix')?.trim();
 
-        if (!newPrefix) {
+        if (!prefix) {
             return interaction.reply({
-                content: '❌ Prefix cannot be empty.',
+                content: '❌ You must provide a prefix.',
             });
         }
 
         await updateGuildConfig(
             client,
             interaction.guildId,
-            { prefix: newPrefix },
+            { prefix }
         );
 
         await interaction.reply({
-            content: `✅ Server prefix changed to \`${newPrefix}\``,
+            content: `✅ Prefix changed to \`${prefix}\``,
         });
     },
 };

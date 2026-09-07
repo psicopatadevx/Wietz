@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { PermissionFlagsBits } from 'discord.js';
-import { isWhitelisted } from './whitelistService.js';
+
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DATA_FILE = path.join(DATA_DIR, 'antilink.json');
 
@@ -48,9 +48,7 @@ export function setAntiLinkEnabled(guildId, enabled) {
 
 export function setAntiLinkPunishment(guildId, punishment) {
     const allowed = ['delete', 'warn', 'kick', 'ban'];
-if (isWhitelisted(message.member)) {
-    return false;
-}
+
     if (!allowed.includes(punishment)) {
         throw new Error('Invalid anti-link punishment.');
     }

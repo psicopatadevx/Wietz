@@ -1,4 +1,3 @@
-
 import { AuditLogEvent } from 'discord.js';
 
 const config = {
@@ -36,11 +35,7 @@ export async function handleAuditLogEntry({ entry, guild }) {
     if (!entry?.executorId) return;
 
     const executorId = entry.executorId;
-const member = await guild.members
-    .fetch(executorId)
-    .catch(() => null);
 
-    
     // Never punish the server owner
     if (executorId === guild.ownerId) return;
 

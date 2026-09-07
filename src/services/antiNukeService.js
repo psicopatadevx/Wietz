@@ -1,6 +1,6 @@
 
 import { AuditLogEvent } from 'discord.js';
-import { isWhitelisted } from './whitelistService.js';
+
 const config = {
     enabled: true,
     threshold: 3,
@@ -40,9 +40,7 @@ const member = await guild.members
     .fetch(executorId)
     .catch(() => null);
 
-if (member && isWhitelisted(member)) {
-    return;
-}
+    
     // Never punish the server owner
     if (executorId === guild.ownerId) return;
 
